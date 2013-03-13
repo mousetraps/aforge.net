@@ -348,12 +348,12 @@ namespace AForge.Video.VFW
                 if ( bitmapInfoHeader.height > 0 )
                 {
                     // it`s a bottom-top image
-                    int dst = imageData.Scan0.ToInt32( ) + dstStride * ( height - 1 );
-                    int src = DIB.ToInt32( ) + Marshal.SizeOf( typeof( Win32.BITMAPINFOHEADER ) );
+                    long dst = imageData.Scan0.ToInt64( ) + dstStride * ( height - 1 );
+                    long src = DIB.ToInt64( ) + Marshal.SizeOf( typeof( Win32.BITMAPINFOHEADER ) );
 
                     for ( int y = 0; y < height; y++ )
                     {
-                        Win32.memcpy( dst, src, srcStride );
+                        Win32.memcpy( new IntPtr(dst), new IntPtr(src), srcStride );
                         dst -= dstStride;
                         src += srcStride;
                     }
@@ -361,11 +361,11 @@ namespace AForge.Video.VFW
                 else
                 {
                     // it`s a top bootom image
-                    int dst = imageData.Scan0.ToInt32( );
-                    int src = DIB.ToInt32( ) + Marshal.SizeOf( typeof( Win32.BITMAPINFOHEADER ) );
+                    long dst = imageData.Scan0.ToInt64( );
+                    long src = DIB.ToInt64( ) + Marshal.SizeOf( typeof( Win32.BITMAPINFOHEADER ) );
 
                     // copy the whole image
-                    Win32.memcpy( dst, src, srcStride * height );
+                    Win32.memcpy( new IntPtr(dst), new IntPtr(src), srcStride * height );
                 }
 
                 // unlock bitmap data
